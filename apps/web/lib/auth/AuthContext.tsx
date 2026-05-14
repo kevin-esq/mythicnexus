@@ -31,8 +31,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- client-only session hydration from localStorage */
     setAccessToken(getStoredAccessToken());
     setHydrated(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   const setSessionToken = useCallback((token: string | null) => {
@@ -122,8 +124,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       accessToken,
       meQuery.data,
       meQuery.error,
-      meQuery.isPending,
-      meQuery.isError,
       isSessionReady,
       login,
       register,
