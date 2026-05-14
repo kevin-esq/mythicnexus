@@ -46,7 +46,7 @@ A **pnpm** + **Turborepo** monorepo for **MythicNexus** (RPG knowledge, campaign
 
 ## VS Code / Cursor
 
-- .NET debugging: `.vscode/launch.json` targets `apps/api/bin/Debug/net9.0/api.dll` with `cwd` `apps/api`.
+- .NET debugging: `.vscode/launch.json` targets `apps/api/src/MythicNexus.Api/bin/Debug/net9.0/MythicNexus.Api.dll` with `cwd` `apps/api` (so `apps/api/.env` is found).
 
 ## Related skills
 
