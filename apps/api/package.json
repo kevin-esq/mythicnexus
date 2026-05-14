@@ -2,8 +2,9 @@
   "name": "api",
   "private": true,
   "scripts": {
-    "dev": "dotnet watch run --project api.csproj --non-interactive",
-    "build": "dotnet build api.csproj -c Release",
+    "dev": "dotnet watch run --project src/MythicNexus.Api/MythicNexus.Api.csproj --non-interactive",
+    "build": "dotnet build MythicNexus.Api.sln -c Release",
+    "test": "dotnet test MythicNexus.Api.sln -c Release",
     "lint": "echo \"No .NET linter wired yet\""
   }
 }
