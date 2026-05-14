@@ -21,7 +21,7 @@ See [docs/architecture.md](docs/architecture.md) and [docs/roadmap.md](docs/road
 
 ```txt
 apps/web        → Next.js frontend
-apps/api        → .NET 9 backend (modular src/: Domain, Infrastructure, Modules)
+apps/api        → .NET 9 backend: solution `MythicNexus.Api.sln`, code under `apps/api/src/`, xUnit tests under `apps/api/tests/`
 packages/       → shared TypeScript libraries (empty until introduced)
 docs/           → architecture, roadmap, decisions, ADRs
 infrastructure/ → local infrastructure notes and commands
@@ -29,7 +29,7 @@ infrastructure/ → local infrastructure notes and commands
 
 ## Architecture
 
-- **API**: vertical slices under `apps/api/src/Modules/*`; persistence and migrations under `Infrastructure/Persistence`.
+- **API**: host `src/MythicNexus.Api` (Program, modules, HTTP); libraries `MythicNexus.Domain`, `MythicNexus.Application`, `MythicNexus.Infrastructure` (EF, migrations).
 - **Decisions**: [docs/tech-decisions.md](docs/tech-decisions.md) and [docs/adr/](docs/adr/).
 
 ## Prerequisites
@@ -46,14 +46,20 @@ dotnet tool restore
 
 ### Database
 
-- **Local**: `docker compose up -d postgres` (credentials and database name in [docker-compose.yml](docker-compose.yml), aligned with API `appsettings.Development.json`).
+- **Local**: `docker compose up -d postgres` (credentials in [docker-compose.yml](docker-compose.yml), aligned with `appsettings.Development.json` on the API). Full steps, verification, and troubleshooting: **[docs/database-local.md](docs/database-local.md)**.
 - **Remote**: set the connection string in `apps/api/.env` (copy from [apps/api/.env.example](apps/api/.env.example)). Do **not** commit `.env`.
 
 ### Migrations
 
 ```bash
-dotnet ef database update --project apps/api/api.csproj --startup-project apps/api/api.csproj
+dotnet tool restore
+# Use Development so the API loads appsettings.Development.json (local Docker).
+# PowerShell: $env:ASPNETCORE_ENVIRONMENT = "Development"
+# bash:       export ASPNETCORE_ENVIRONMENT=Development
+dotnet ef database update --project apps/api/src/MythicNexus.Infrastructure/MythicNexus.Infrastructure.csproj --startup-project apps/api/src/MythicNexus.Api/MythicNexus.Api.csproj
 ```
+
+See **[docs/database-local.md](docs/database-local.md)** for `migrations list`, current migration names, and Supabase notes.
 
 ### Development
 
@@ -64,10 +70,11 @@ pnpm dev
 - Web: [http://localhost:3000](http://localhost:3000)
 - API: [http://localhost:5118](http://localhost:5118) (HTTP profile in `launchSettings.json`)
 
-### Build and lint
+### Build, test, and lint
 
 ```bash
 pnpm build
+pnpm test
 pnpm lint
 ```
 
