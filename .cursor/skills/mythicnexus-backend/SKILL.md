@@ -15,7 +15,7 @@ description: >-
 - **`src/` structure**:
   - `Domain/Entities` — persisted model.
   - `Domain/Validation` — FluentValidation rules (registered via `AddValidatorsFromAssemblyContaining<User>()`).
-  - `Infrastructure/Persistence` — `MythicNexusDbContext`, EF migrations.
+  - `Infrastructure/Persistence` — `MythicNexusDbContext`, EF migrations, `Configurations/` (`IEntityTypeConfiguration<>` per aggregate).
   - `Infrastructure/Configuration` — `LocalEnvLoader` (loads `.env` before the host starts).
   - `Modules/{Campaigns,Characters,Lore,Search,Users,AI}/` — `Add*Module` + `Map*Endpoints` extensions wired in `Program.cs`.
 

@@ -20,15 +20,16 @@ Near-term delivery is **not** AI-heavy: first ship a **searchable knowledge plat
 - `Infrastructure/` — persistence (EF Core `DbContext`, migrations)
 - `Modules/` — vertical slices: Campaigns, Characters, Lore, Search, Users, AI (scaffolds; defer heavy AI until post-MVP)
 
-## Domain sketch (initial entities)
+## Domain sketch (current entities)
 
-- **User** — identity; owns campaigns
-- **Campaign** — container for characters, lore, tags
-- **Character** — PCs/NPCs with notes
-- **LoreEntry** — markdown body, title, belongs to a campaign
-- **Tag** — scoped per campaign; many-to-many with lore entries
+- **User** — identity with unique `Username`; owns campaigns; can author lore entries (`CreatedBy` on `LoreEntry`).
+- **Campaign** — container for characters, lore, tags, and **lore relations** (knowledge graph edges scoped to the campaign).
+- **Character** — PCs/NPCs with optional `Race`, `Class`, `Backstory`, and `Notes`.
+- **LoreEntry** — `Title`, `Slug` (unique per campaign), optional `Summary`, `ContentMarkdown`, `CreatedByUserId`; many-to-many with tags.
+- **LoreRelation** — directed edge between two lore entries in the same campaign (`RelationType` string, e.g. `references`, `contradicts`); unique on `(CampaignId, Source, Target, RelationType)`.
+- **Tag** — scoped per campaign; many-to-many with lore entries.
 
-Later: `TimelineEvent`, `World`, richer relationships, and ingestion pipelines.
+Later: `TimelineEvent`, `World`, ingestion pipelines, and semantic search over this graph.
 
 ## Related documents
 
