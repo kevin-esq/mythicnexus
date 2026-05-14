@@ -1,0 +1,37 @@
+{
+  "name": "mythicnexus",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "packageManager": "pnpm@11.1.1",
+  "main": "index.js",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "unrs-resolver"
+    ]
+  },
+  "type": "module",
+  "lint-staged": {
+    "apps/web/**/*.{ts,tsx}": "pnpm --filter web exec eslint --max-warnings 0",
+    "*.{json,md,yml,yaml,css,mjs}": "prettier --write",
+    ".vscode/*.json": "prettier --write"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.1",
+    "prettier": "^3.5.3",
+    "turbo": "^2.9.12"
+  }
+}

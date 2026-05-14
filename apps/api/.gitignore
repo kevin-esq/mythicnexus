@@ -1,0 +1,9 @@
+# Local overrides (not committed)
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+
+# Build output (also covered by repo root; kept for running tooling from this folder only)
+bin/
+obj/
