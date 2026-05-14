@@ -93,7 +93,7 @@ Templates: `*.env.example` files under each app.
 - `develop` — integration.
 - `feature/*` — feature work.
 
-Protect `main` on GitHub (pull requests required; restrict direct pushes).
+Protect `main` on GitHub (pull requests required; restrict direct pushes). Conventions, PR checklist, and CI: **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 
 ## Roadmap
 
