@@ -12,4 +12,5 @@ public class Campaign
     public ICollection<Character> Characters { get; set; } = new List<Character>();
     public ICollection<LoreEntry> LoreEntries { get; set; } = new List<LoreEntry>();
     public ICollection<Tag> Tags { get; set; } = new List<Tag>();
+    public ICollection<LoreRelation> LoreRelations { get; set; } = new List<LoreRelation>();
 }
