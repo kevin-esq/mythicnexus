@@ -10,7 +10,7 @@
       "request": "launch",
       "preLaunchTask": "build",
       // If you have changed target frameworks, make sure to update the program path.
-      "program": "${workspaceFolder}/apps/api/bin/Debug/net9.0/api.dll",
+      "program": "${workspaceFolder}/apps/api/src/MythicNexus.Api/bin/Debug/net9.0/MythicNexus.Api.dll",
       "args": [],
       "cwd": "${workspaceFolder}/apps/api",
       "stopAtEntry": false,

@@ -14,7 +14,7 @@ Near-term goal: a **searchable knowledge platform** (organization, lore, campaig
 
 ## Current entities (EF)
 
-Defined under `apps/api/src/Domain/Entities/` and configured in `MythicNexusDbContext`:
+Defined under `apps/api/src/MythicNexus.Domain/Entities/` and configured in `MythicNexusDbContext`:
 
 | Entity        | Role                                                                                      |
 | ------------- | ----------------------------------------------------------------------------------------- |

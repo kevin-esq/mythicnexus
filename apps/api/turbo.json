@@ -2,7 +2,10 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "outputs": ["bin/**"]
+      "outputs": ["src/**/bin/**", "src/**/obj/**", "tests/**/bin/**", "tests/**/obj/**"]
+    },
+    "test": {
+      "outputs": ["tests/**/bin/**", "tests/**/obj/**"]
     }
   }
 }

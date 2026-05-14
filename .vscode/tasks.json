@@ -7,7 +7,7 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/apps/api/api.csproj",
+        "${workspaceFolder}/apps/api/MythicNexus.Api.sln",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary;ForceNoAlign"
       ],
@@ -19,7 +19,7 @@
       "type": "process",
       "args": [
         "publish",
-        "${workspaceFolder}/apps/api/api.csproj",
+        "${workspaceFolder}/apps/api/MythicNexus.Api.sln",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary;ForceNoAlign"
       ],
@@ -29,7 +29,7 @@
       "label": "watch",
       "command": "dotnet",
       "type": "process",
-      "args": ["watch", "run", "--project", "${workspaceFolder}/apps/api/api.csproj"],
+      "args": ["watch", "run", "--project", "${workspaceFolder}/apps/api/src/MythicNexus.Api/MythicNexus.Api.csproj"],
       "problemMatcher": "$msCompile"
     }
   ]
