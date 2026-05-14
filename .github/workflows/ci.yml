@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dotnet:
+    name: .NET (build, migrate, test)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        ports:
+          - 65432:5432
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: mythic_integration
+        options: >-
+          --health-cmd "pg_isready -U test -d mythic_integration"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      ASPNETCORE_ENVIRONMENT: Testing
+      ConnectionStrings__Default: >-
+        Host=127.0.0.1;Port=65432;Database=mythic_integration;Username=test;Password=test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Restore dotnet tools
+        run: dotnet tool restore
+
+      - name: Build solution
+        run: dotnet build apps/api/MythicNexus.Api.sln -c Release
+
+      - name: Apply EF migrations (test database)
+        run: >-
+          dotnet ef database update
+          --project apps/api/src/MythicNexus.Infrastructure/MythicNexus.Infrastructure.csproj
+          --startup-project apps/api/src/MythicNexus.Api/MythicNexus.Api.csproj
+
+      - name: Run tests
+        run: dotnet test apps/api/MythicNexus.Api.sln -c Release --no-build --verbosity normal
+
+  web:
+    name: Web (lint, build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.1.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Prettier (GitHub metadata and contributing)
+        run: pnpm exec prettier --check ".github/**/*" "CONTRIBUTING.md"
+
+      - name: Lint & build web
+        run: pnpm exec turbo run lint build --filter=web
