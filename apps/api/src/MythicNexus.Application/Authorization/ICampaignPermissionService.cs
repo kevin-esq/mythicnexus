@@ -15,4 +15,10 @@ public interface ICampaignPermissionService
     Task<bool> CanEditSharedLoreAsync(Guid userId, Guid campaignId, CancellationToken cancellationToken = default);
 
     Task<bool> CanDeleteCampaignAsync(Guid userId, Guid campaignId, CancellationToken cancellationToken = default);
+
+    Task<bool> CanViewCampaignAsync(Guid userId, Guid campaignId, CancellationToken cancellationToken = default);
+
+    Task<bool> CanManageCampaignMetadataAsync(Guid userId, Guid campaignId, CancellationToken cancellationToken = default);
+
+    Task<bool> CanInviteMembersAsync(Guid userId, Guid campaignId, CancellationToken cancellationToken = default);
 }

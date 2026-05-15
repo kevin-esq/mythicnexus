@@ -14,5 +14,12 @@ public static class ErrorCodes
 
     public const string UserNotFound = "user.not_found";
 
+    public const string CampaignNotFound = "campaign.not_found";
+    public const string CampaignForbidden = "campaign.forbidden";
+    public const string CharacterNotFound = "character.not_found";
+    public const string CharacterForbidden = "character.forbidden";
+    public const string MemberNotFound = "member.not_found";
+    public const string MemberConflict = "member.conflict";
+
     public const string InternalServerError = "internal.server_error";
 }

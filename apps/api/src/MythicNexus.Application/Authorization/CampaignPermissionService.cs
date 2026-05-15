@@ -30,7 +30,7 @@ public sealed class CampaignPermissionService(MythicNexusDbContext db, ITenantPe
     public async Task<bool> CanEditCharacterAsync(Guid userId, Guid characterId, CancellationToken cancellationToken = default)
     {
         var character = await db.Characters.AsNoTracking()
-            .FirstOrDefaultAsync(c => c.Id == characterId, cancellationToken);
+            .FirstOrDefaultAsync(c => c.Id == characterId && c.DeletedAt == null, cancellationToken);
         if (character is null)
         {
             return false;
@@ -65,7 +65,7 @@ public sealed class CampaignPermissionService(MythicNexusDbContext db, ITenantPe
     public async Task<bool> CanDeleteCampaignAsync(Guid userId, Guid campaignId, CancellationToken cancellationToken = default)
     {
         var campaign = await db.Campaigns.AsNoTracking()
-            .FirstOrDefaultAsync(c => c.Id == campaignId, cancellationToken);
+            .FirstOrDefaultAsync(c => c.Id == campaignId && c.DeletedAt == null, cancellationToken);
         if (campaign is null)
         {
             return false;
@@ -80,4 +80,55 @@ public sealed class CampaignPermissionService(MythicNexusDbContext db, ITenantPe
         var campaignRole = await GetRoleAsync(userId, campaignId, cancellationToken);
         return CampaignCapabilityRules.CanDeleteCampaign(tenantRole.Value, campaignRole);
     }
+
+    public async Task<bool> CanViewCampaignAsync(Guid userId, Guid campaignId, CancellationToken cancellationToken = default)
+    {
+        var campaign = await db.Campaigns.AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == campaignId && c.DeletedAt == null, cancellationToken);
+        if (campaign is null)
+        {
+            return false;
+        }
+
+        var tenantRole = await tenantPermissions.GetRoleAsync(userId, campaign.TenantId, cancellationToken);
+        if (!tenantRole.HasValue)
+        {
+            return false;
+        }
+
+        if (TenantCapabilityRules.CanManageAllCampaignsInTenant(tenantRole.Value))
+        {
+            return true;
+        }
+
+        if (campaign.OwnerUserId == userId)
+        {
+            return true;
+        }
+
+        var campaignRole = await GetRoleAsync(userId, campaignId, cancellationToken);
+        return campaignRole.HasValue;
+    }
+
+    public async Task<bool> CanManageCampaignMetadataAsync(Guid userId, Guid campaignId, CancellationToken cancellationToken = default)
+    {
+        var campaign = await db.Campaigns.AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == campaignId && c.DeletedAt == null, cancellationToken);
+        if (campaign is null)
+        {
+            return false;
+        }
+
+        var tenantRole = await tenantPermissions.GetRoleAsync(userId, campaign.TenantId, cancellationToken);
+        if (!tenantRole.HasValue)
+        {
+            return false;
+        }
+
+        var campaignRole = await GetRoleAsync(userId, campaignId, cancellationToken);
+        return CampaignCapabilityRules.CanManageCampaignMetadata(tenantRole.Value, campaignRole);
+    }
+
+    public Task<bool> CanInviteMembersAsync(Guid userId, Guid campaignId, CancellationToken cancellationToken = default) =>
+        CanManageCampaignMetadataAsync(userId, campaignId, cancellationToken);
 }
