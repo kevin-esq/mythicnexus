@@ -23,6 +23,7 @@ This document summarizes **how MythicNexus handles auth today** and how it maps 
 - New registrations set **`EmailConfirmed = false`** and receive a **one-time token** (only a **SHA-256 hash** of the opaque token is stored).
 - Until confirmed, **login is rejected** with **`403`** and `auth.email_not_confirmed`.
 - **Development**: `IEmailOutbox` writes **`.txt` drops** under `email-outbox` (see `Email:LocalOutbox:RelativeDirectory` and `.gitignore`). Replace with SMTP / provider later without changing the domain services.
+- **Campaign membership**: When a user is added to a campaign (`POST /api/campaigns/{id}/members`), the **invitee** gets an outbox message too (Spanish copy, link to the web campaign shell). **In-app notifications** are deferred.
 
 ## Forgot password
 

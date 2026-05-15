@@ -12,5 +12,6 @@
 | Local orchestration | **One** `docker-compose.yml` at repo root      | Postgres (and future shared deps like Redis) in one place; `docker compose up -d postgres`. Avoid per-app compose unless an app is developed/deployed as an isolated stack.                                       |
 | Local DB            | Docker Compose, `postgres:16`                  | Default dev connection in `appsettings.Development.json`; override with `apps/api/.env`. Apply schema with `dotnet ef database update` — see [docs/database-local.md](docs/database-local.md). Remote Supabase uses the same API/EF path with a different connection string. |
 | Local configuration | Next: `.env.local`; API: `.env` + JSON         | Next reads `.env*` natively; API loads optional `apps/api/.env` before host startup via `DotNetEnv` (see `LocalEnvLoader`)                                                                                        |
+| External RPG corpora | **Not** a core dependency; optional seeds via future `ContentImport` ([ADR 007](./adr/007-external-content-ingestion-strategy.md)) | D&D 5e API and OGL-style sources may bootstrap data **after** lore + search; domain stays generic (`LoreEntry`, relations, tags). D&D Beyond integration is out of scope near-term. |
 
 Open items: refresh-token or session hardening, CI workflow shape, hosting targets.

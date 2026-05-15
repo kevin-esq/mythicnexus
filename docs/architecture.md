@@ -37,7 +37,7 @@ Open **`apps/api/MythicNexus.Api.sln`** in Visual Studio. From CLI: `dotnet buil
 - **LoreRelation** — directed edge between two lore entries in the same campaign (`RelationType` string, e.g. `references`, `contradicts`); unique on `(CampaignId, Source, Target, RelationType)`.
 - **Tag** — scoped per campaign; many-to-many with lore entries.
 
-Later: `TimelineEvent`, `World`, ingestion pipelines, and semantic search over this graph.
+Later: `TimelineEvent`, `World`, **source-agnostic content import** (providers → normalizers → jobs; optional D&D 5e API seeds only—see [ADR 007](./adr/007-external-content-ingestion-strategy.md)), and semantic search over this graph.
 
 ## Related documents
 
@@ -46,4 +46,4 @@ Later: `TimelineEvent`, `World`, ingestion pipelines, and semantic search over t
 - [Local database & migrations](./database-local.md) — Docker Postgres, `dotnet ef`, verify applied migrations
 - [Security & authentication](./security-auth.md) — passwords, lockout, verification, rate limits, audit, tenants
 - [Tenant vs campaign RBAC](./authorization-rbac.md) — workspace roles, campaign roles, character ownership
-- [Architecture Decision Records (ADRs)](./adr/) — monorepo (001), PostgreSQL (002), modular API (003), [testing layout](./adr/004-backend-testing-layout.md), [solution layout & ergonomics](./adr/005-backend-solution-layout.md), [tenant vs campaign authorization](./adr/006-tenant-and-campaign-authorization.md)
+- [Architecture Decision Records (ADRs)](./adr/) — monorepo (001), PostgreSQL (002), modular API (003), [testing layout](./adr/004-backend-testing-layout.md), [solution layout & ergonomics](./adr/005-backend-solution-layout.md), [tenant vs campaign authorization](./adr/006-tenant-and-campaign-authorization.md), [external content ingestion](./adr/007-external-content-ingestion-strategy.md)

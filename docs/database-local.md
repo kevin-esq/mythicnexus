@@ -61,6 +61,7 @@ With `ASPNETCORE_ENVIRONMENT=Development` set as above:
 | `20260514125049_DomainFoundationLoreGraph` | Lore graph, campaigns, characters |
 | `20260514140856_SecurityTenancyAuthHardening` | Tenants, login audit, email/reset tokens, lockout & email flags on `Users` |
 | `20260514143036_TenantCampaignRbacAndCharacterOwnership` | Tenant/campaign RBAC, `Character.OwnerUserId`, `Campaign.TenantId` |
+| `20260514152106_CampaignCoreSoftDeleteAudit` | Soft delete + audit columns on campaigns, characters, lore; `Character.Level`; tenant-scoped list indexes |
 
 New migrations should be added with `dotnet ef migrations add …` from the repo root using the same `--project` / `--startup-project` pair; see the backend skill in `.cursor/skills/mythicnexus-backend/SKILL.md`.
 

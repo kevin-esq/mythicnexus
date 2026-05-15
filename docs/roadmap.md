@@ -18,6 +18,6 @@
 2. **Campaigns** — create campaigns, notes, characters
 3. **Lore** — markdown entries, tags, relationships
 4. **Search** — PostgreSQL full-text search on lore and notes
-5. **Import** — markdown / JSON ingestion
+5. **Import** — markdown / JSON and optional **legal third-party seeds** (e.g. D&D 5e API) only behind a **source-agnostic ingestion layer**; no D&D Beyond coupling; see [ADR 007](./adr/007-external-content-ingestion-strategy.md). **Order:** campaigns → lore → search → import foundation.
 
 Defer until after MVP: embeddings, agents, heavy AI features.
