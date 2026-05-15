@@ -13,4 +13,6 @@ public interface ITenantPermissionService
     Task<bool> CanManageBillingAsync(Guid userId, Guid tenantId, CancellationToken cancellationToken = default);
 
     Task<bool> CanManageAllCampaignsInTenantAsync(Guid userId, Guid tenantId, CancellationToken cancellationToken = default);
+
+    Task<bool> CanCreateCampaignInTenantAsync(Guid userId, Guid tenantId, CancellationToken cancellationToken = default);
 }

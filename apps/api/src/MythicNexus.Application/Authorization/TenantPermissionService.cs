@@ -36,4 +36,10 @@ public sealed class TenantPermissionService(MythicNexusDbContext db) : ITenantPe
         var role = await GetRoleAsync(userId, tenantId, cancellationToken);
         return role.HasValue && TenantCapabilityRules.CanManageAllCampaignsInTenant(role.Value);
     }
+
+    public async Task<bool> CanCreateCampaignInTenantAsync(Guid userId, Guid tenantId, CancellationToken cancellationToken = default)
+    {
+        var role = await GetRoleAsync(userId, tenantId, cancellationToken);
+        return role.HasValue && TenantCapabilityRules.CanCreateCampaignInTenant(role.Value);
+    }
 }

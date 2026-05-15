@@ -15,5 +15,10 @@ public class Character
     public string? Class { get; set; }
     public string? Backstory { get; set; }
     public string? Notes { get; set; }
+    public int Level { get; set; } = 1;
+
     public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset UpdatedAt { get; set; }
+    public Guid? UpdatedByUserId { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
 }

@@ -20,4 +20,8 @@ public static class TenantCapabilityRules
     /// <summary>Org-wide campaign administration (e.g. list/delete any campaign in the tenant).</summary>
     public static bool CanManageAllCampaignsInTenant(TenantRole role) =>
         role is TenantRole.Owner or TenantRole.Admin;
+
+    /// <summary>Create a new campaign inside the workspace (not the same as org-wide admin).</summary>
+    public static bool CanCreateCampaignInTenant(TenantRole role) =>
+        role is TenantRole.Owner or TenantRole.Admin or TenantRole.Member;
 }

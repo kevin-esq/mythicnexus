@@ -10,9 +10,15 @@ public class Campaign
 
     public Guid OwnerUserId { get; set; }
     public User Owner { get; set; } = null!;
+
+    public Guid CreatedByUserId { get; set; }
+    public Guid? UpdatedByUserId { get; set; }
+
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset UpdatedAt { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
 
     public ICollection<Character> Characters { get; set; } = new List<Character>();
     public ICollection<LoreEntry> LoreEntries { get; set; } = new List<LoreEntry>();

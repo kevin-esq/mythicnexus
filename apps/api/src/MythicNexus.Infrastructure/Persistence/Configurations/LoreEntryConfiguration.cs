@@ -24,6 +24,13 @@ public class LoreEntryConfiguration : IEntityTypeConfiguration<LoreEntry>
             .HasForeignKey(e => e.CreatedByUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.HasOne<User>()
+            .WithMany()
+            .HasForeignKey(e => e.UpdatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(e => new { e.CampaignId, e.DeletedAt });
+
         builder.HasMany(e => e.Tags)
             .WithMany(t => t.LoreEntries)
             .UsingEntity<Dictionary<string, object>>(

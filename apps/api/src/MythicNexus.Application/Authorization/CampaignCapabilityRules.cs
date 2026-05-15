@@ -24,4 +24,11 @@ public static class CampaignCapabilityRules
     public static bool CanDeleteCampaign(TenantRole tenantRole, CampaignRole? campaignRole) =>
         TenantCapabilityRules.CanManageAllCampaignsInTenant(tenantRole)
         || (tenantRole is TenantRole.Member && campaignRole is CampaignRole.DungeonMaster or CampaignRole.CoDungeonMaster);
+
+    public static bool CanManageCampaignMetadata(TenantRole tenantRole, CampaignRole? campaignRole) =>
+        TenantCapabilityRules.CanManageAllCampaignsInTenant(tenantRole)
+        || campaignRole is CampaignRole.DungeonMaster or CampaignRole.CoDungeonMaster;
+
+    public static bool CanInviteCampaignMembers(TenantRole tenantRole, CampaignRole? campaignRole) =>
+        CanManageCampaignMetadata(tenantRole, campaignRole);
 }

@@ -17,9 +17,15 @@ public class CharacterConfiguration : IEntityTypeConfiguration<Character>
             .HasForeignKey(e => e.CampaignId)
             .OnDelete(DeleteBehavior.Cascade);
         builder.HasIndex(e => e.OwnerUserId);
+        builder.HasIndex(e => new { e.CampaignId, e.DeletedAt });
+        builder.Property(e => e.Level).HasDefaultValue(1);
         builder.HasOne(e => e.Owner)
             .WithMany(u => u.OwnedCharacters)
             .HasForeignKey(e => e.OwnerUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne<User>()
+            .WithMany()
+            .HasForeignKey(e => e.UpdatedByUserId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

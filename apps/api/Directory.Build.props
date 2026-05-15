@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <!--
+      NU1900 offline/firewall: skip NuGet vulnerability audit locally (needs nuget.org).
+      On GitHub Actions / Azure Pipelines, audit stays at SDK default unless you pass -p:NuGetAudit=...
+    -->
+    <NuGetAudit Condition="'$(GITHUB_ACTIONS)' != 'true' And '$(TF_BUILD)' != 'true' And '$(NuGetAudit)' == ''">false</NuGetAudit>
+  </PropertyGroup>
+</Project>

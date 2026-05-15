@@ -35,7 +35,7 @@ infrastructure/ → local infrastructure notes and commands
 ## Prerequisites
 
 - **Node.js 20+** (recommended) and **pnpm** 9+ (the repository pins `packageManager` in `package.json`).
-- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0).
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0). A root [`global.json`](global.json) pins SDK **9.0.x** so `dotnet watch`, `dotnet build`, etc. from the repo root do **not** pick a newer **.NET 10** preview SDK (which can fail with `MSB4237` / `NuGetSdkResolver` and missing `System.Runtime`).
 
 ## Getting started
 
@@ -69,6 +69,18 @@ pnpm dev
 
 - Web: [http://localhost:3000](http://localhost:3000)
 - API: [http://localhost:5118](http://localhost:5118) (HTTP profile in `launchSettings.json`)
+
+#### API: `dotnet watch` (e.g. Supabase profile)
+
+```powershell
+$env:ASPNETCORE_ENVIRONMENT = "Supabase"
+dotnet watch --configuration Debug --project apps/api/src/MythicNexus.Api --launch-profile Supabase
+```
+
+- **`TypeLoadException` / `Could not load type 'Invalid_Token.0x…'`** (often at a minimal API handler like `AddMemberAsync`) — **Hot reload** applied a code change while the old `MythicNexus.Api` assembly was still loaded; the runtime’s generated request delegate no longer matches metadata. **Fix:** in the watch terminal press **Ctrl+R** (restart) or stop and start `dotnet watch` so the process loads a fresh build. This commonly happens after **changing handler parameters** or when **Debug vs Release** outputs get mixed (see below).
+- **MSB3021 / MSB3027 (“cannot copy … DLL … used by MythicNexus.Api”)** — Another API process is still running and locking `apps/api/src/MythicNexus.Api/bin/Debug/net9.0/`. Stop it: Ctrl+C in the other terminal, stop debugging in the IDE, or end the stray `MythicNexus.Api` / `dotnet` process in Task Manager. Only **one** live process should use that output folder; then start `dotnet watch` again.
+- **Debug vs Release** — Keep `dotnet watch` on **`--configuration Debug`** (as above). If you also run `dotnet build -c Release` on the same project while watch is running, the watcher may touch `bin/Release` and hot reload can get confused; prefer Release builds only when watch is stopped, or always use Debug during watch.
+- **NU1900** (NuGet vulnerability index) — Usually a **network** block to `https://api.nuget.org/`. Restore/build still work; `apps/api/Directory.Build.props` turns off audit **locally** (not on GitHub Actions / Azure Pipelines) to reduce noise. Fix the network or proxy if you need audit data on your machine.
 
 ### Build, test, and lint
 

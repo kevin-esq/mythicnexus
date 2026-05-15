@@ -13,6 +13,8 @@ public class LoreEntry
     public User CreatedBy { get; set; } = null!;
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset UpdatedAt { get; set; }
+    public Guid? UpdatedByUserId { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
 
     public ICollection<Tag> Tags { get; set; } = new List<Tag>();
     public ICollection<LoreRelation> OutgoingRelations { get; set; } = new List<LoreRelation>();
