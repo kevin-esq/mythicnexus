@@ -9,7 +9,7 @@ public class LoreRelationConfiguration : IEntityTypeConfiguration<LoreRelation>
     public void Configure(EntityTypeBuilder<LoreRelation> builder)
     {
         builder.HasKey(e => e.Id);
-        builder.Property(e => e.RelationType).HasMaxLength(80);
+        builder.Property(e => e.RelationType).HasMaxLength(80).HasConversion<string>();
         builder.HasIndex(e => new { e.CampaignId, e.SourceLoreEntryId, e.TargetLoreEntryId, e.RelationType }).IsUnique();
 
         builder.HasOne(e => e.Campaign)

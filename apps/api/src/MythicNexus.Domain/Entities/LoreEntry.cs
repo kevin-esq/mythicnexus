@@ -1,3 +1,5 @@
+using MythicNexus.Domain.Enums;
+
 namespace MythicNexus.Domain.Entities;
 
 public class LoreEntry
@@ -8,7 +10,10 @@ public class LoreEntry
     public string Title { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
     public string? Summary { get; set; }
+    public string? Excerpt { get; set; }
     public string ContentMarkdown { get; set; } = string.Empty;
+    public LoreStatus Status { get; set; } = LoreStatus.Draft;
+    public LoreVisibility Visibility { get; set; } = LoreVisibility.CampaignMembers;
     public Guid CreatedByUserId { get; set; }
     public User CreatedBy { get; set; } = null!;
     public DateTimeOffset CreatedAt { get; set; }

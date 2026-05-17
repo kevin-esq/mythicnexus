@@ -12,6 +12,9 @@ public class LoreEntryConfiguration : IEntityTypeConfiguration<LoreEntry>
         builder.Property(e => e.Title).HasMaxLength(300);
         builder.Property(e => e.Slug).HasMaxLength(200);
         builder.Property(e => e.Summary).HasMaxLength(2000);
+        builder.Property(e => e.Excerpt).HasMaxLength(4000);
+        builder.Property(e => e.Status).HasMaxLength(32).HasConversion<string>();
+        builder.Property(e => e.Visibility).HasMaxLength(40).HasConversion<string>();
         builder.HasIndex(e => new { e.CampaignId, e.Slug }).IsUnique();
 
         builder.HasOne(e => e.Campaign)

@@ -1,3 +1,5 @@
+using MythicNexus.Domain.Enums;
+
 namespace MythicNexus.Domain.Entities;
 
 /// <summary>
@@ -12,6 +14,6 @@ public class LoreRelation
     public LoreEntry Source { get; set; } = null!;
     public Guid TargetLoreEntryId { get; set; }
     public LoreEntry Target { get; set; } = null!;
-    public string RelationType { get; set; } = string.Empty;
+    public LoreRelationType RelationType { get; set; } = LoreRelationType.References;
     public DateTimeOffset CreatedAt { get; set; }
 }
