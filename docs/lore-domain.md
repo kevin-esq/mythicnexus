@@ -12,8 +12,8 @@ This document is the **human-readable** companion to [ADR 008 — Lore domain mo
 
 The codebase already includes:
 
-- **`LoreEntry`**: `CampaignId`, `Title`, `Slug`, optional `Summary`, `ContentMarkdown`, `CreatedByUserId`, timestamps, soft delete (`DeletedAt`), audit (`UpdatedByUserId`).
-- **`LoreRelation`**: **directed** edge `Source` → `Target` within a campaign, plus `RelationType` (today a string; see ADR 008 for enum evolution).
+- **`LoreEntry`**: `CampaignId`, `Title`, `Slug`, optional `Summary` / `Excerpt`, `ContentMarkdown`, `LoreStatus`, `LoreVisibility`, `CreatedByUserId`, timestamps, soft delete (`DeletedAt`), audit (`UpdatedByUserId`).
+- **`LoreRelation`**: **directed** edge `Source` → `Target` within a campaign, plus `LoreRelationType` (stored as string in PostgreSQL).
 - **`Tag`**: **campaign-scoped** (`CampaignId` + `Name`), many-to-many with lore entries.
 
 Unique slug per campaign is already enforced at the persistence layer (`(CampaignId, Slug)`).
@@ -43,7 +43,7 @@ A lore entry should read as a **knowledge node**, not a disposable text note. Be
 |------|--------|
 | **Status** | `Draft`, `Published`, `Archived` on `LoreEntry` for prep, release, and moderation. |
 | **Visibility** | `LoreVisibility` on `LoreEntry` as **metadata** (`Public` / `CampaignMembers` / `DungeonMastersOnly` style); **real access** still enforced by campaign + lore permission services. |
-| **Relation typing** | Replace free-form `RelationType` string with a **`LoreRelationType` enum** (or a constrained vocabulary mapped to enum) for queries, UI, and future search. |
+| **Relation typing** | `LoreRelationType` enum in domain; values persisted as PascalCase strings (legacy lowercase labels normalized in migration where applicable). |
 | **Backlinks (MVP)** | Compute **incoming** relations with a normal query over `LoreRelation` where `TargetLoreEntryId = id`. **No** dedicated backlink materialization table until usage proves it. |
 | **Mentions / wiki links** | Future: `[[slug]]` (or similar) should resolve to **structured references** that create or update `LoreRelation` rows—not a one-off regex hack without slug integrity. |
 | **Search (later sprint)** | PostgreSQL **full-text** over title + markdown + tags; optional `tsvector` / excerpt columns when that sprint lands. |

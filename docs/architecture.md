@@ -33,11 +33,16 @@ Open **`apps/api/MythicNexus.Api.sln`** in Visual Studio. From CLI: `dotnet buil
 - **Tenant** — workspace; has many `TenantMemberships` and **campaigns** (`Campaign.TenantId`).
 - **Campaign** — belongs to a **tenant**; has **members** (`CampaignMember`); container for characters, lore, tags, and **lore relations** (graph edges scoped to the campaign).
 - **Character** — belongs to a campaign and an **owning user** (`OwnerUserId`); optional `Race`, `Class`, `Backstory`, `Notes`.
-- **LoreEntry** — `Title`, `Slug` (unique per campaign), optional `Summary`, `ContentMarkdown`, `CreatedByUserId`; many-to-many with tags.
-- **LoreRelation** — directed edge between two lore entries in the same campaign (`RelationType` string, e.g. `references`, `contradicts`); unique on `(CampaignId, Source, Target, RelationType)`.
+- **LoreEntry** — `Title`, `Slug` (unique per campaign), optional `Summary` / `Excerpt`, `ContentMarkdown`, `LoreStatus`, `LoreVisibility`, `CreatedByUserId`, `UpdatedByUserId`; many-to-many with tags.
+- **LoreRelation** — directed edge between two lore entries in the same campaign (`LoreRelationType` stored as string); unique on `(CampaignId, Source, Target, RelationType)`.
 - **Tag** — scoped per campaign; many-to-many with lore entries.
 
 Later: `TimelineEvent`, `World`, **source-agnostic content import** (providers → normalizers → jobs; optional D&D 5e API seeds only—see [ADR 007](./adr/007-external-content-ingestion-strategy.md)), and semantic search over this graph.
+
+## Related ADRs
+
+- [007 — External content ingestion strategy](./adr/007-external-content-ingestion-strategy.md)
+- [008 — Lore domain model](./adr/008-lore-domain-model.md)
 
 ## Related documents
 
